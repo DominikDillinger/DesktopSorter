@@ -1,0 +1,75 @@
+﻿<Window x:Name="DesktopSorter" x:Class="DesktopSorter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopSorter"
+        mc:Ignorable="d"
+        Title="Desktop Sorter" Height="482" Width="870.8" BorderThickness="0">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TabControl Height="Auto" Width="Auto" Margin="0">
+            <TabItem Header="Main">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Offset="0"/>
+                        <GradientStop Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="18*"/>
+                        <RowDefinition Height="25*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Path" Margin="20,20,20.4,20">
+                        <Grid Margin="0" Width="Auto" Height="60">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="573*"/>
+                                <ColumnDefinition Width="224*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="path" Margin="10" TextWrapping="Wrap" Text="%USERPROFILE%\Desktop" MaxLines="1"/>
+                            <Button x:Name="pathchange" Content="Choose Folder Directory" Margin="10" Grid.Column="1" Click="pathchange_Click"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Sorting process" Margin="20,20,20.4,20.4" Grid.Row="1">
+                        <Grid Margin="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Button x:Name="startsort" Content="Start sorting" Margin="10" Click="sort_Click"/>
+                            <ProgressBar x:Name="progressbar" Margin="10" Grid.Row="1"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Offset="0"/>
+                        <GradientStop Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="18*"/>
+                        <RowDefinition Height="25*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Sorting Directorys" Margin="20,20,20,20">
+                        <Grid Margin="0" Width="Auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="506*"/>
+                                <ColumnDefinition Width="301*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Whitelist" Margin="20,20,20,20" Grid.Row="1">
+                        <Grid Margin="0"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
