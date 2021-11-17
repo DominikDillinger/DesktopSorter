@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopSorter"
         mc:Ignorable="d"
-        Title="Desktop Sorter" Height="482" Width="870.8" BorderThickness="0">
+        Title="Desktop Sorter" Height="430" Width="750" BorderThickness="0" MinWidth="660" MinHeight="380">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -24,13 +24,19 @@
                         <RowDefinition Height="25*"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Path" Margin="20,20,20.4,20">
-                        <Grid Margin="0" Width="Auto" Height="60">
+                        <Grid Margin="0" Width="Auto">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20*"/>
+                                <RowDefinition Height="60*"/>
+                                <RowDefinition Height="20*"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="573*"/>
-                                <ColumnDefinition Width="224*"/>
+                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="path" Margin="10" TextWrapping="Wrap" Text="%USERPROFILE%\Desktop" MaxLines="1"/>
-                            <Button x:Name="pathchange" Content="Choose Folder Directory" Margin="10" Grid.Column="1" Click="pathchange_Click"/>
+                            <TextBox x:Name="path" Margin="10,6.8,10,7" TextWrapping="Wrap" Text="%USERPROFILE%\Desktop" MaxLines="1" TextChanged="path_TextChanged" Grid.Row="1"/>
+                            <Button x:Name="pathchange" Content="Choose Folder Directory" Margin="10,6.8,10.4,8" Grid.Column="1" Click="pathchange_Click" Grid.Row="1"/>
+                            <TextBlock x:Name="pathincorrect" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="560" Foreground="Red" FontWeight="Bold" Grid.Row="2"/>
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="Sorting process" Margin="20,20,20.4,20.4" Grid.Row="1">
