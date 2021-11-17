@@ -1,19 +1,7 @@
-﻿using System;
+using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Ookii.Dialogs;
 
 namespace DesktopSorter
 
@@ -23,9 +11,17 @@ namespace DesktopSorter
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool iscurrentpathcorrect = true;
+
+
         public MainWindow()
         {
             InitializeComponent();
+
+
+            path.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+
         }
 
         public void sort(string sortpath, string[][] sortierDestinations, string[] whitelist)
@@ -40,13 +36,28 @@ namespace DesktopSorter
 
         private void sort_Click(object sender, RoutedEventArgs e)
         {
-            progressbar.Value = 100;
-
-            if (progressbar.Value == 100)
+            if (iscurrentpathcorrect)
             {
-                MessageBox.Show("Sorting process successful!");
-                progressbar.Value = 0;
+
+
+                //Sortierfunktion hier einbinden
+                progressbar.Value = 100;
+
+                if (progressbar.Value == 100)
+                {
+                    MessageBox.Show("Sorting process successful!");
+                    progressbar.Value = 0;
+                }
+                //Sortierfiunktion hier darüber einbinden
+
+
             }
+            else
+            {
+                MessageBox.Show("Please choose a available directory!");
+            }
+
+
         }
 
         private void pathchange_Click(object sender, RoutedEventArgs e)
@@ -55,8 +66,26 @@ namespace DesktopSorter
             BrowserDialog.UseDescriptionForTitle = true;
             BrowserDialog.Description = "Please choose your folder to sort";
             BrowserDialog.ShowDialog();
-            path.Text = BrowserDialog.SelectedPath;
 
+            path.Text = BrowserDialog.SelectedPath;
+        }
+
+        private void path_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Directory.Exists(path.Text))
+            {
+                iscurrentpathcorrect = true;
+                pathincorrect.Text = ""; 
+            }
+            else
+            {
+                iscurrentpathcorrect = false;
+
+                if (pathincorrect != null)
+                {
+                    pathincorrect.Text = "Error: Directory does not exists!";
+                }
+            }
         }
     }
 }
