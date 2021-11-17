@@ -17,7 +17,7 @@ namespace DesktopSorter
         public MainWindow()
         {
             InitializeComponent();
-
+            //KEKW
 
             path.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
