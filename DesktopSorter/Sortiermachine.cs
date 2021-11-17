@@ -8,24 +8,20 @@ namespace DesktopSorter
 {
     class Sortiermachine
     {
-        public DataTable GetTabble(string query)
+        public DataTable GetTable(string query)
         {
             //Führt eine query in der Datenbank aus und gibt die Tabelle zurück.
-            List<string> ImportedFiles = new List<string>();
             using (var con = new SQLiteConnection(@"Data Source=Datenbank.db"))
             {
-                using (var conn = new SQLiteConnection(@"Data Source=Datenbank.db"))
+                var tab = new DataTable();
+                con.Open();
+                using (SQLiteDataAdapter da = new SQLiteDataAdapter(query, con))
                 {
-                    var tab = new DataTable();
-                    conn.Open();
-                    using (SQLiteDataAdapter da = new SQLiteDataAdapter(query, conn))
-                    {
-                        da.AcceptChangesDuringFill = false;
-                        da.Fill(tab);
-                    }
-                    conn.Close();
-                    return tab;
+                    da.AcceptChangesDuringFill = false;
+                    da.Fill(tab);
                 }
+                con.Close();
+                return tab;
             }
         }
 
@@ -35,7 +31,7 @@ namespace DesktopSorter
 
             //Files von destination entgegennehmen und whitelist checken
             string[] fileList = Directory.GetFiles(sortpath);
-            var whitelist = GetTabble("SELECT * FROM whitelist");
+            var whitelist = GetTable("SELECT * FROM whitelist");
             var sortList = new List<string>();
 
             foreach (var file in fileList)
@@ -52,7 +48,7 @@ namespace DesktopSorter
             }
 
             //Files Sortieren
-            var dest = GetTabble("SELECT * FROM Destinations");
+            var dest = GetTable("SELECT * FROM Destinations");
 
             foreach (DataRow dataRow in dest.Rows)
             {

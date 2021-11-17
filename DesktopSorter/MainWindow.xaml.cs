@@ -17,11 +17,18 @@ namespace DesktopSorter
         public MainWindow()
         {
             InitializeComponent();
-            //KEKW
+
+            Loaded += MyWindow_Loaded;
 
             path.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        }
 
-
+        private void MyWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var machine = new Sortiermachine();
+            destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations").DefaultView;
+            destinationTable.AutoGenerateColumns = true;
+            destinationTable.CanUserAddRows = false;
         }
 
         public void sort(string sortpath, string[][] sortierDestinations, string[] whitelist)

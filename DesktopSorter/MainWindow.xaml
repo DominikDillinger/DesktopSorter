@@ -64,12 +64,7 @@
                         <RowDefinition Height="25*"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Sorting Directorys" Margin="20,20,20,20">
-                        <Grid Margin="0" Width="Auto">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="506*"/>
-                                <ColumnDefinition Width="301*"/>
-                            </Grid.ColumnDefinitions>
-                        </Grid>
+                        <DataGrid x:Name="destinationTable" HorizontalAlignment="Left" Height="100" Margin="10,0,0,-7.333" VerticalAlignment="Top" Width="100"/>
                     </GroupBox>
                     <GroupBox Header="Whitelist" Margin="20,20,20,20" Grid.Row="1">
                         <Grid Margin="0"/>
