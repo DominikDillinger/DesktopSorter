@@ -67,7 +67,12 @@ namespace DesktopSorter
             BrowserDialog.Description = "Please choose your folder to sort";
             BrowserDialog.ShowDialog();
 
-            path.Text = BrowserDialog.SelectedPath;
+            // Falls Abbrechen gedrückt wird -> keine Änderung am Pfad
+            if (BrowserDialog.SelectedPath != "")
+            {
+                path.Text = BrowserDialog.SelectedPath;
+            }
+
         }
 
         private void path_TextChanged(object sender, TextChangedEventArgs e)
