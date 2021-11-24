@@ -25,6 +25,16 @@ namespace DesktopSorter
             }
         }
 
+        public void InsertData(string query)
+        {
+            //Führt eine query in der Datenbank aus und gibt die Tabelle zurück.
+            using (var con = new SQLiteConnection(@"Data Source=Datenbank.db"))
+            {
+                SQLiteCommand com = new SQLiteCommand(query, con);
+                com.ExecuteNonQuery();
+            }
+        }
+
         public void Sort(string sortpath)
         {
             //Methode, die die Files in einen Angegeben pfad sortiert.
