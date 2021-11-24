@@ -67,7 +67,9 @@
                         <DataGrid x:Name="destinationTable" HorizontalAlignment="Left" Height="100" Margin="10,0,0,-7.333" VerticalAlignment="Top" Width="100"/>
                     </GroupBox>
                     <GroupBox Header="Whitelist" Margin="20,20,20,20" Grid.Row="1">
-                        <Grid Margin="0"/>
+                        <Grid Margin="0">
+                            <DataGrid x:Name="whitelistTable" HorizontalAlignment="Left" Height="118" Margin="10,10,0,0" VerticalAlignment="Top" Width="225"/>
+                        </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>

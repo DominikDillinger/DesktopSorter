@@ -25,10 +25,14 @@ namespace DesktopSorter
 
         private void MyWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            //init Sortiermachine
             var machine = new Sortiermachine();
+
+            //init destinationTable
             destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations").DefaultView;
-            destinationTable.AutoGenerateColumns = true;
-            destinationTable.CanUserAddRows = false;
+
+            //init whitelistTable
+            whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist").DefaultView;
         }
 
         public void sort(string sortpath, string[][] sortierDestinations, string[] whitelist)
