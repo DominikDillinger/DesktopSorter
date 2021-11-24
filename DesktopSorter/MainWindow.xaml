@@ -60,15 +60,35 @@
                 </TabItem.Background>
                 <Grid >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="18*"/>
-                        <RowDefinition Height="25*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <GroupBox Header="Sorting Directorys" Margin="20,20,20,20">
-                        <DataGrid x:Name="destinationTable" HorizontalAlignment="Left" Height="100" Margin="10,0,0,-7.333" VerticalAlignment="Top" Width="100"/>
-                    </GroupBox>
-                    <GroupBox Header="Whitelist" Margin="20,20,20,20" Grid.Row="1">
+                    <GroupBox Header="Sorting Directories" Margin="20,10,20,5">
                         <Grid Margin="0">
-                            <DataGrid x:Name="whitelistTable" HorizontalAlignment="Left" Height="118" Margin="10,10,0,0" VerticalAlignment="Top" Width="225"/>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid x:Name="destinationTable" Margin="10" RowHeaderWidth="0" ColumnHeaderHeight="25" HeadersVisibility="Column" IsSynchronizedWithCurrentItem="True" Grid.Column="1" VerticalAlignment="Top"/>
+                            <Button Margin="10,10,0,0" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <StackPanel>
+                                    <Image x:Name="saveDirectories" Source="Pictures/save.png" RenderTransformOrigin="0.881,0.627" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Whitelist" Margin="20,5,10,20" Grid.Row="1">
+                        <Grid Margin="0,0,9.6,-9.6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid x:Name="whitelistTable" Margin="10" RowHeaderWidth="0" ColumnHeaderHeight="25" HeadersVisibility="Column" IsSynchronizedWithCurrentItem="True" Grid.Column="1" VerticalAlignment="Top"/>
+                            <Button x:Name="saveWhitelist" Margin="10,10,0,0" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <StackPanel>
+                                    <Image x:Name="saveDirectories1" Source="Pictures/save.png" RenderTransformOrigin="0.881,0.627" />
+                                </StackPanel>
+                            </Button>
                         </Grid>
                     </GroupBox>
                 </Grid>

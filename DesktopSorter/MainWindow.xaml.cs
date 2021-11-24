@@ -20,11 +20,13 @@ namespace DesktopSorter
 
             Loaded += MyWindow_Loaded;
 
-            path.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
 
         private void MyWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            //init Desktoppfad
+            path.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
             //init Sortiermachine
             var machine = new Sortiermachine();
 
