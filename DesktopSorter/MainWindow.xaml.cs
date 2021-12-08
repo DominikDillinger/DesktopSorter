@@ -1,4 +1,6 @@
 using System;
+using System.Data;
+using System.Data.SQLite;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +14,9 @@ namespace DesktopSorter
     public partial class MainWindow : Window
     {
         bool iscurrentpathcorrect = true;
-
+        readonly Sortiermachine machine = new Sortiermachine();
+        SQLiteDataAdapter destDa = new SQLiteDataAdapter();
+        SQLiteDataAdapter whiteDa = new SQLiteDataAdapter();
 
         public MainWindow()
         {
@@ -27,20 +31,48 @@ namespace DesktopSorter
             //init Desktoppfad
             path.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            //init Sortiermachine
-            var machine = new Sortiermachine();
+            //init deleteColumn
+            var template = new DataTemplate();
+            FrameworkElementFactory deleteButton = new FrameworkElementFactory(typeof(Button));
+            deleteButton.SetValue(Button.ContentProperty, "X");
+            deleteButton.SetValue(Button.CommandProperty, System.Windows.Input.ApplicationCommands.Delete);
+            template.VisualTree = deleteButton;
+
+            var deleteColumn1 = new DataGridTemplateColumn();
+            deleteColumn1.Header = "Delete";
+            deleteColumn1.CellTemplate = template;
+
+            var deleteColumn2 = new DataGridTemplateColumn();
+            deleteColumn2.Header = "Delete";
+            deleteColumn2.CellTemplate = template;
 
             //init destinationTable
-            destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations").DefaultView;
+            destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations",ref destDa).DefaultView;
+            destinationTable.Columns.Add(deleteColumn1);
 
             //init whitelistTable
-            whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist").DefaultView;
+            whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist",ref whiteDa).DefaultView;
+            whitelistTable.Columns.Add(deleteColumn2);
         }
 
-
-        public void sort_Click(object sender, RoutedEventArgs e)
+        private void sort_Click(object sender, RoutedEventArgs e)
         {
+            //Files von destination entgegennehmen und whitelist checken
+            
 
+            //Files in sortpath in destinations sortierren
+        }
+
+        private void sort_Click(object sender, RoutedEventArgs e)
+        {
+            //Files von destination entgegennehmen und whitelist checken
+            
+
+            //Files in sortpath in destinations sortierren
+        }
+
+        private void sort_Click(object sender, RoutedEventArgs e)
+        {
             if (iscurrentpathcorrect)
             {
                 
@@ -95,6 +127,16 @@ namespace DesktopSorter
                     pathincorrect.Text = "Error: Directory does not exists!";
                 }
             }
+        }
+
+        private void saveDirectories_Click(object sender, RoutedEventArgs e)
+        {
+            destDa.Update((destinationTable.ItemsSource as DataView).Table);
+        }
+
+        private void saveWhitelist1_Click(object sender, RoutedEventArgs e)
+        {
+            whiteDa.Update((whitelistTable.ItemsSource as DataView).Table);
         }
     }
 }

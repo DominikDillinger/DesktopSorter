@@ -8,6 +8,23 @@ namespace DesktopSorter
 {
     class Sortiermachine
     {
+        public DataTable GetTable(string query,ref SQLiteDataAdapter da)
+        {
+            //Führt eine query in der Datenbank aus und gibt die Tabelle zurück.
+            using (var con = new SQLiteConnection(@"Data Source=Datenbank.db"))
+            {
+                var tab = new DataTable();
+                con.Open();
+                using (da = new SQLiteDataAdapter(query, con))
+                {
+                    da.AcceptChangesDuringFill = false;
+                    da.Fill(tab);
+                }
+                con.Close();
+                return tab;
+            }
+        }
+
         public DataTable GetTable(string query)
         {
             //Führt eine query in der Datenbank aus und gibt die Tabelle zurück.
