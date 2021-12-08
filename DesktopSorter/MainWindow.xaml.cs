@@ -22,7 +22,7 @@ namespace DesktopSorter
 
         }
 
-        private void MyWindow_Loaded(object sender, RoutedEventArgs e)
+        public void MyWindow_Loaded(object sender, RoutedEventArgs e)
         {
             //init Desktoppfad
             path.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -37,22 +37,13 @@ namespace DesktopSorter
             whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist").DefaultView;
         }
 
-        public void sort(string sortpath, string[][] sortierDestinations, string[] whitelist)
+
+        public void sort_Click(object sender, RoutedEventArgs e)
         {
-            //Methode, die die Files in einen Angegeben pfad sortiert.
 
-            //Files von destination entgegennehmen und whitelist checken
-            
-
-            //Files in sortpath in destinations sortierren
-        }
-
-        private void sort_Click(object sender, RoutedEventArgs e)
-        {
             if (iscurrentpathcorrect)
             {
-
-
+                
                 //Sortierfunktion hier einbinden
                 progressbar.Value = 100;
 
