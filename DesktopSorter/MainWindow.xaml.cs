@@ -14,9 +14,13 @@ namespace DesktopSorter
     public partial class MainWindow : Window
     {
         bool iscurrentpathcorrect = true;
-        readonly Sortiermachine machine = new Sortiermachine();
-        SQLiteDataAdapter destDa = new SQLiteDataAdapter();
-        SQLiteDataAdapter whiteDa = new SQLiteDataAdapter();
+        readonly Sortiermachine machine = new Sortiermachine(); //Backend Klasse
+
+        //Connection und Dataadapter für die Tabellen
+        SQLiteDataAdapter destDa;
+        SQLiteConnection destCon;
+        SQLiteDataAdapter whiteDa;
+        SQLiteConnection whiteCon;
 
         public MainWindow()
         {
@@ -47,11 +51,11 @@ namespace DesktopSorter
             deleteColumn2.CellTemplate = template;
 
             //init destinationTable
-            destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations",ref destDa).DefaultView;
+            destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations", ref destCon, ref destDa).DefaultView;
             destinationTable.Columns.Add(deleteColumn1);
 
             //init whitelistTable
-            whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist",ref whiteDa).DefaultView;
+            whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist", ref whiteCon, ref whiteDa).DefaultView;
             whitelistTable.Columns.Add(deleteColumn2);
         }
 
@@ -116,12 +120,12 @@ namespace DesktopSorter
 
         private void saveDirectories_Click(object sender, RoutedEventArgs e)
         {
-            destDa.Update((destinationTable.ItemsSource as DataView).Table);
+            machine.SaveData((destinationTable.ItemsSource as DataView).Table, "Destinations", ref destCon, ref destDa);
         }
 
-        private void saveWhitelist1_Click(object sender, RoutedEventArgs e)
+        private void saveWhitelist_Click(object sender, RoutedEventArgs e)
         {
-            whiteDa.Update((whitelistTable.ItemsSource as DataView).Table);
+            machine.SaveData((whitelistTable.ItemsSource as DataView).Table, "Whitelist", ref whiteCon, ref whiteDa);
         }
     }
 }
