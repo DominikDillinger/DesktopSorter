@@ -101,6 +101,7 @@ namespace DesktopSorter
             {
                 foreach (string file in sortList.AsEnumerable().Where(p => p.Split('.').Last() == dataRow.ItemArray.Last().ToString()))
                 {
+                    // Try Move inklusive Fehlerbehandlung
                     try
                     {
                         //Verschieben der Dateien
@@ -124,7 +125,7 @@ namespace DesktopSorter
                     }
                     catch
                     {
-                        message = "Error: Something went wrong";
+                        message = "Error: Something went wrong!";
                     }
                 }
             }

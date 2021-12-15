@@ -80,7 +80,7 @@ namespace DesktopSorter
             }
 
 
-            // Message ausgeben 
+            // MessageBox ausgeben 
             MessageBox.Show(message);
 
             // progressbar zurücksetzen
