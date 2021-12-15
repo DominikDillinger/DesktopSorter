@@ -84,7 +84,7 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <DataGrid x:Name="whitelistTable" Margin="10" RowHeaderWidth="0" ColumnHeaderHeight="25" HeadersVisibility="Column" IsSynchronizedWithCurrentItem="True" Grid.Column="1" VerticalAlignment="Top" CanUserReorderColumns="False"/>
-                            <Button x:Name="saveWhitelist" Margin="10,10,0,0" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button Click="saveWhitelist_Click" Margin="10,10,0,0" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
                                 <StackPanel>
                                     <Image Source="Pictures/save.png" RenderTransformOrigin="0.881,0.627" />
                                 </StackPanel>
@@ -94,5 +94,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <ContentControl Content="ContentControl" HorizontalAlignment="Left" Margin="836,270,-194,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
