@@ -95,39 +95,54 @@ namespace DesktopSorter
                     filecount++;
                 }
             }
-            prograssbar.Maximum = filecount;
 
-            foreach (DataRow dataRow in dest.Rows)
+            //Sind Dateien vorhanden??
+            if (filecount != 0)
             {
-                foreach (string file in sortList.AsEnumerable().Where(p => p.Split('.').Last() == dataRow.ItemArray.Last().ToString()))
+                //Falls dateien vorhanden sind
+                prograssbar.Maximum = filecount;
+
+
+                foreach (DataRow dataRow in dest.Rows)
                 {
-                    // Try Move inklusive Fehlerbehandlung
-                    try
+                    foreach (string file in sortList.AsEnumerable().Where(p => p.Split('.').Last() == dataRow.ItemArray.Last().ToString()))
                     {
-                        //Verschieben der Dateien
-                        File.Move(file, dataRow.ItemArray.First().ToString() + '\\' + file.Split('\\').Last());
+                        // Try Move inklusive Fehlerbehandlung
+                        try
+                        {
+                            //Verschieben der Dateien
+                            File.Move(file, dataRow.ItemArray.First().ToString() + '\\' + file.Split('\\').Last());
 
-                        //Fortschritt anzeigen
-                        prograssbar.Value++;
-                        progressbartext.Text = "Moving File " + prograssbar.Value + "/" + prograssbar.Maximum;
+                            //Fortschritt anzeigen
+                            prograssbar.Value++;
+                            progressbartext.Text = "Moving File " + prograssbar.Value + "/" + prograssbar.Maximum;
 
-                    }
-                    catch (UnauthorizedAccessException e)
-                    {
+                        }
+                        catch (UnauthorizedAccessException e)
+                        {
 
-                        message = "Error:\n" + e.Message + "\n\"" + dataRow.ItemArray.First().ToString() + "\"";
+                            message = "Error:\n" + e.Message + "\n\"" + dataRow.ItemArray.First().ToString() + "\"";
 
-                    }
-                    catch (DirectoryNotFoundException e)
-                    {
-                        message = "Error:\n"  + e.Message + "\n\"" + dataRow.ItemArray.First().ToString() + "\"";
+                        }
+                        catch (DirectoryNotFoundException e)
+                        {
+                            message = "Error:\n" + e.Message + "\n\"" + dataRow.ItemArray.First().ToString() + "\"";
 
-                    }
-                    catch
-                    {
-                        message = "Error: Something went wrong!";
+                        }
+                        catch
+                        {
+                            message = "Error: Something went wrong!";
+                        }
                     }
                 }
+            }
+            else
+            {
+                //Behandlung falls keine Dateien zur Bearbeitung zur verfügung stehen
+                prograssbar.Maximum = 1;
+                prograssbar.Value = 1;
+
+                message = "Warning:\nNo matching files found.\nNothing changed!";
             }
 
             return message;

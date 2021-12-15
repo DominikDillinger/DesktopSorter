@@ -61,7 +61,6 @@ namespace DesktopSorter
 
         public void sort_Click(object sender, RoutedEventArgs e)
         {
-
             //Directories und Whitelist sicher, falls vom user nicht gemacht wurde
             saveDirectories();
             saveWhitelist();
@@ -79,15 +78,12 @@ namespace DesktopSorter
                 message = "Error:\nDirectory path is not correct!\n\"" + path.Text + "\"";
             }
 
-
             // MessageBox ausgeben 
             MessageBox.Show(message);
 
             // progressbar zurücksetzen
             progressbar.Value = 0;
             progressbartext.Text = "";
-
-
         }
 
         private void pathchange_Click(object sender, RoutedEventArgs e)
