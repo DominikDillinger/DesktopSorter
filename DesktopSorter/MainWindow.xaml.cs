@@ -14,9 +14,13 @@ namespace DesktopSorter
     public partial class MainWindow : Window
     {
         bool iscurrentpathcorrect = true;
-        readonly Sortiermachine machine = new Sortiermachine();
-        SQLiteDataAdapter destDa = new SQLiteDataAdapter();
-        SQLiteDataAdapter whiteDa = new SQLiteDataAdapter();
+        readonly Sortiermachine machine = new Sortiermachine(); //Backend Klasse
+
+        //Connection und Dataadapter für die Tabellen
+        SQLiteDataAdapter destDa;
+        SQLiteConnection destCon;
+        SQLiteDataAdapter whiteDa;
+        SQLiteConnection whiteCon;
 
         public MainWindow()
         {
@@ -47,46 +51,42 @@ namespace DesktopSorter
             deleteColumn2.CellTemplate = template;
 
             //init destinationTable
-            destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations",ref destDa).DefaultView;
+            destinationTable.ItemsSource = machine.GetTable("SELECT * FROM Destinations", ref destCon, ref destDa).DefaultView;
             destinationTable.Columns.Add(deleteColumn1);
 
             //init whitelistTable
-            whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist",ref whiteDa).DefaultView;
+            whitelistTable.ItemsSource = machine.GetTable("SELECT * FROM Whitelist", ref whiteCon, ref whiteDa).DefaultView;
             whitelistTable.Columns.Add(deleteColumn2);
         }
 
         public void sort_Click(object sender, RoutedEventArgs e)
         {
 
-            int status = 0; // Fehlercode: [0] Success
+            //Directories und Whitelist sicher, falls vom user nicht gemacht wurde
+            saveDirectories();
+            saveWhitelist();
 
+            //Rückbgabemeldung
+            string message;
+            
+            //Start sort, falls Sorting path correct
             if (iscurrentpathcorrect)
             {
-                status = machine.Sort(path.Text, progressbar);
+                message = machine.Sort(path.Text, progressbar, progressbartext);
             }
             else
             {
-                status = 1; // Fehlercode: [1] directory path is not correct
+                message = "Error:\nDirectory path is not correct!\n\"" + path.Text + "\"";
             }
+
+
+            // Message ausgeben 
+            MessageBox.Show(message);
 
             // progressbar zurücksetzen
             progressbar.Value = 0;
+            progressbartext.Text = "";
 
-            // je nach Status Message ausgeben 
-            String message;
-            switch (status)
-            {
-                case 1:
-                    message = "Error: Directory path is not correct!";
-                    break;
-                case 2:
-                    message = "Error: Sorting function error!";
-                    break;
-                default:
-                    message = "Sorting process successful!";
-                    break;
-            }
-            MessageBox.Show(message);
 
         }
 
@@ -107,6 +107,8 @@ namespace DesktopSorter
 
         private void path_TextChanged(object sender, TextChangedEventArgs e)
         {
+
+            //Check if Path exists
             if (Directory.Exists(path.Text))
             {
                 iscurrentpathcorrect = true;
@@ -118,26 +120,29 @@ namespace DesktopSorter
 
                 if (pathincorrect != null)
                 {
-                    pathincorrect.Text = "Error: Directory does not exists!";
+                    pathincorrect.Text = "Error: Directory does not exist!";
                 }
             }
         }
 
         private void saveDirectories_Click(object sender, RoutedEventArgs e)
         {
-            destDa.Update((destinationTable.ItemsSource as DataView).Table);
-            Console.WriteLine("test");
+            saveDirectories();
         }
 
-        private void saveWhitelist1_Click(object sender, RoutedEventArgs e)
+        private void saveWhitelist_Click(object sender, RoutedEventArgs e)
         {
-            whiteDa.Update((whitelistTable.ItemsSource as DataView).Table);
+            saveWhitelist();
         }
 
-        private void saveDirectories_Click_1(object sender, RoutedEventArgs e)
+        private void saveDirectories()
         {
-            Console.WriteLine("test");
+            machine.SaveData((destinationTable.ItemsSource as DataView).Table, "Destinations", ref destCon, ref destDa);
+        }
 
+        private void saveWhitelist()
+        {
+            machine.SaveData((whitelistTable.ItemsSource as DataView).Table, "Whitelist", ref whiteCon, ref whiteDa);
         }
     }
 }

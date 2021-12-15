@@ -3,21 +3,21 @@ using System.Linq;
 using System.Data.SQLite;
 using System.Data;
 using System.IO;
+using System;
 
 namespace DesktopSorter
 {
     class Sortiermachine
     {
-        public DataTable GetTable(string query,ref SQLiteDataAdapter da)
+        public DataTable GetTable(string query, ref SQLiteConnection con, ref SQLiteDataAdapter da)
         {
-            //Führt eine query in der Datenbank aus und gibt die Tabelle zurück.
-            using (var con = new SQLiteConnection(@"Data Source=Datenbank.db"))
+            //Erzeugt Connection, Dataadapter und gibt die Tabelle aus
+            using (con = new SQLiteConnection(@"Data Source=Datenbank.db"))
             {
                 var tab = new DataTable();
                 con.Open();
                 using (da = new SQLiteDataAdapter(query, con))
                 {
-                    da.AcceptChangesDuringFill = false;
                     da.Fill(tab);
                 }
                 con.Close();
@@ -32,9 +32,8 @@ namespace DesktopSorter
             {
                 var tab = new DataTable();
                 con.Open();
-                using (SQLiteDataAdapter da = new SQLiteDataAdapter(query, con))
+                using (var da = new SQLiteDataAdapter(query, con))
                 {
-                    da.AcceptChangesDuringFill = false;
                     da.Fill(tab);
                 }
                 con.Close();
@@ -42,25 +41,26 @@ namespace DesktopSorter
             }
         }
 
-        public void InsertData(string query)
+        public void SaveData(DataTable table, string tableNameInDatabank, ref SQLiteConnection con, ref SQLiteDataAdapter da)
         {
-            //Führt eine query in der Datenbank aus und gibt die Tabelle zurück.
-            using (var con = new SQLiteConnection(@"Data Source=Datenbank.db"))
+            //Speichert die Tabelle ab
+            using (con = new SQLiteConnection(@"Data Source=Datenbank.db"))
             {
-                SQLiteCommand com = new SQLiteCommand(query, con);
-                com.ExecuteNonQuery();
+                con.Open();
+                using (da = new SQLiteDataAdapter("SELECT * FROM " + tableNameInDatabank, con))
+                {
+                    SQLiteCommandBuilder build = new SQLiteCommandBuilder(da);
+                    da.Update(table);
+                }
+                con.Close();
             }
         }
 
-        public int Sort(string sortpath, System.Windows.Controls.ProgressBar prograssbar)
+        public string Sort(string sortpath, System.Windows.Controls.ProgressBar prograssbar, System.Windows.Controls.TextBlock progressbartext)
         {
             //Methode, die die Files in einen Angegeben pfad sortiert.
 
-            int status = 0;
-
-            //Testweise setzen von progressbar status:
-            prograssbar.Value = 100;
-
+            string message = "Sorting process successful!";
 
             //Files von destination entgegennehmen und whitelist checken
             string[] fileList = Directory.GetFiles(sortpath);
@@ -80,18 +80,56 @@ namespace DesktopSorter
                 if (toList) { sortList.Add(file); }
             }
 
+            
+
             //Files Sortieren
             var dest = GetTable("SELECT * FROM Destinations");
+
+            //Bestimmen der Anzahl von der zu sortierenden Dateien
+
+            int filecount = 0;
+            foreach (DataRow dataRow in dest.Rows)
+            {
+                foreach (string file in sortList.AsEnumerable().Where(p => p.Split('.').Last() == dataRow.ItemArray.Last().ToString()))
+                {
+                    filecount++;
+                }
+            }
+            prograssbar.Maximum = filecount;
 
             foreach (DataRow dataRow in dest.Rows)
             {
                 foreach (string file in sortList.AsEnumerable().Where(p => p.Split('.').Last() == dataRow.ItemArray.Last().ToString()))
                 {
-                    File.Move(file, dataRow.ItemArray.First().ToString() + '\\' + file.Split('\\').Last());
+                    try
+                    {
+                        //Verschieben der Dateien
+                        File.Move(file, dataRow.ItemArray.First().ToString() + '\\' + file.Split('\\').Last());
+
+                        //Fortschritt anzeigen
+                        prograssbar.Value++;
+                        progressbartext.Text = "Moving File " + prograssbar.Value + "/" + prograssbar.Maximum;
+
+                    }
+                    catch (UnauthorizedAccessException e)
+                    {
+
+                        message = "Error:\n" + e.Message + "\n\"" + dataRow.ItemArray.First().ToString() + "\"";
+
+                    }
+                    catch (DirectoryNotFoundException e)
+                    {
+                        message = "Error:\n"  + e.Message + "\n\"" + dataRow.ItemArray.First().ToString() + "\"";
+
+                    }
+                    catch
+                    {
+                        message = "Error: Something went wrong";
+                    }
                 }
             }
 
-            return status;
+            return message;
         }
     }
 }
