@@ -70,9 +70,9 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <DataGrid x:Name="destinationTable" Margin="10" RowHeaderWidth="0" ColumnHeaderHeight="25" HeadersVisibility="Column" IsSynchronizedWithCurrentItem="True" Grid.Column="1" VerticalAlignment="Top" CanUserReorderColumns="False"/>
-                            <Button Margin="10,10,0,0" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button x:Name="saveDirectories" Margin="10,10,0,0" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Click="saveDirectories_Click_1">
                                 <StackPanel>
-                                    <Image x:Name="saveDirectories" Source="Pictures/save.png" RenderTransformOrigin="0.881,0.627" />
+                                    <Image Source="Pictures/save.png" RenderTransformOrigin="0.881,0.627" />
                                 </StackPanel>
                             </Button>
                         </Grid>
@@ -86,7 +86,7 @@
                             <DataGrid x:Name="whitelistTable" Margin="10" RowHeaderWidth="0" ColumnHeaderHeight="25" HeadersVisibility="Column" IsSynchronizedWithCurrentItem="True" Grid.Column="1" VerticalAlignment="Top" CanUserReorderColumns="False"/>
                             <Button x:Name="saveWhitelist" Margin="10,10,0,0" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
                                 <StackPanel>
-                                    <Image x:Name="saveWhitelist1" Source="Pictures/save.png" RenderTransformOrigin="0.881,0.627" />
+                                    <Image Source="Pictures/save.png" RenderTransformOrigin="0.881,0.627" />
                                 </StackPanel>
                             </Button>
                         </Grid>

@@ -52,9 +52,15 @@ namespace DesktopSorter
             }
         }
 
-        public void Sort(string sortpath)
+        public int Sort(string sortpath, System.Windows.Controls.ProgressBar prograssbar)
         {
             //Methode, die die Files in einen Angegeben pfad sortiert.
+
+            int status = 0;
+
+            //Testweise setzen von progressbar status:
+            prograssbar.Value = 100;
+
 
             //Files von destination entgegennehmen und whitelist checken
             string[] fileList = Directory.GetFiles(sortpath);
@@ -84,6 +90,8 @@ namespace DesktopSorter
                     File.Move(file, dataRow.ItemArray.First().ToString() + '\\' + file.Split('\\').Last());
                 }
             }
+
+            return status;
         }
     }
 }

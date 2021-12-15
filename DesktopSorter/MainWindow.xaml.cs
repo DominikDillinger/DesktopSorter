@@ -55,44 +55,38 @@ namespace DesktopSorter
             whitelistTable.Columns.Add(deleteColumn2);
         }
 
-        private void sort_Click(object sender, RoutedEventArgs e)
+        public void sort_Click(object sender, RoutedEventArgs e)
         {
-            //Files von destination entgegennehmen und whitelist checken
-            
 
-            //Files in sortpath in destinations sortierren
-        }
+            int status = 0; // Fehlercode: [0] Success
 
-        private void sort_Click(object sender, RoutedEventArgs e)
-        {
-            //Files von destination entgegennehmen und whitelist checken
-            
-
-            //Files in sortpath in destinations sortierren
-        }
-
-        private void sort_Click(object sender, RoutedEventArgs e)
-        {
             if (iscurrentpathcorrect)
             {
-                
-                //Sortierfunktion hier einbinden
-                progressbar.Value = 100;
-
-                if (progressbar.Value == 100)
-                {
-                    MessageBox.Show("Sorting process successful!");
-                    progressbar.Value = 0;
-                }
-                //Sortierfiunktion hier darüber einbinden
-
-
+                status = machine.Sort(path.Text, progressbar);
             }
             else
             {
-                MessageBox.Show("Please choose a available directory!");
+                status = 1; // Fehlercode: [1] directory path is not correct
             }
 
+            // progressbar zurücksetzen
+            progressbar.Value = 0;
+
+            // je nach Status Message ausgeben 
+            String message;
+            switch (status)
+            {
+                case 1:
+                    message = "Error: Directory path is not correct!";
+                    break;
+                case 2:
+                    message = "Error: Sorting function error!";
+                    break;
+                default:
+                    message = "Sorting process successful!";
+                    break;
+            }
+            MessageBox.Show(message);
 
         }
 
@@ -132,11 +126,18 @@ namespace DesktopSorter
         private void saveDirectories_Click(object sender, RoutedEventArgs e)
         {
             destDa.Update((destinationTable.ItemsSource as DataView).Table);
+            Console.WriteLine("test");
         }
 
         private void saveWhitelist1_Click(object sender, RoutedEventArgs e)
         {
             whiteDa.Update((whitelistTable.ItemsSource as DataView).Table);
+        }
+
+        private void saveDirectories_Click_1(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("test");
+
         }
     }
 }
