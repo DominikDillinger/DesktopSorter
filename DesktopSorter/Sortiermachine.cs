@@ -9,9 +9,37 @@ namespace DesktopSorter
 {
     class Sortiermachine
     {
+        private void CheckDatabase()
+        {
+            //Methode, die checkt, ob die Datenbank vorhanden ist und wenn nicht eine leere erstellt.
+            Console.WriteLine(!File.Exists("Datenbank.db"));
+            if (!File.Exists("Datenbank.db"))
+            {
+                //File erstellen
+                SQLiteConnection.CreateFile("Datenbank.db");
+                using (var con = new SQLiteConnection(@"Data Source=Datenbank.db"))
+                {
+                    con.Open();
+                    string query = "create table Destinations (Path TEXT NOT NULL, Type TEXT NOT NULL, PRIMARY KEY(Path,Type))";
+                    var com = new SQLiteCommand(query, con);
+                    com.ExecuteNonQuery();
+                    query = "create table Whitelist (Name TEXT NOT NULL, PRIMARY KEY(Name))";
+                    com = new SQLiteCommand(query, con);
+                    com.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+
+            return;
+        }
+
         public DataTable GetTable(string query, ref SQLiteConnection con, ref SQLiteDataAdapter da)
         {
             //Erzeugt Connection, Dataadapter und gibt die Tabelle aus
+
+            //Datenbank Checken
+            CheckDatabase();
+
             using (con = new SQLiteConnection(@"Data Source=Datenbank.db"))
             {
                 var tab = new DataTable();
@@ -28,6 +56,10 @@ namespace DesktopSorter
         public DataTable GetTable(string query)
         {
             //Führt eine query in der Datenbank aus und gibt die Tabelle zurück.
+
+            //Datenbank Checken
+            CheckDatabase();
+
             using (var con = new SQLiteConnection(@"Data Source=Datenbank.db"))
             {
                 var tab = new DataTable();
@@ -43,6 +75,11 @@ namespace DesktopSorter
 
         public void SaveData(DataTable table, string tableNameInDatabank, ref SQLiteConnection con, ref SQLiteDataAdapter da)
         {
+            //Methode, die ein Datagrid einliest und abspeichert.
+
+            //Datenbank Checken
+            CheckDatabase();
+
             //Speichert die Tabelle ab
             using (con = new SQLiteConnection(@"Data Source=Datenbank.db"))
             {
@@ -59,6 +96,9 @@ namespace DesktopSorter
         public string Sort(string sortpath, System.Windows.Controls.ProgressBar prograssbar, System.Windows.Controls.TextBlock progressbartext)
         {
             //Methode, die die Files in einen Angegeben pfad sortiert.
+
+            //Datenbank Checken
+            CheckDatabase();
 
             string message = "Sorting process successful!";
 
