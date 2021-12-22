@@ -12,7 +12,6 @@ namespace DesktopSorter
         private void CheckDatabase()
         {
             //Methode, die checkt, ob die Datenbank vorhanden ist und wenn nicht eine leere erstellt.
-            Console.WriteLine(!File.Exists("Datenbank.db"));
             if (!File.Exists("Datenbank.db"))
             {
                 //File erstellen
