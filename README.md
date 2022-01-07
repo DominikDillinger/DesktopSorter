@@ -6,11 +6,6 @@ Software Engeneering Kurs - Projekt
 *Idee:*
 
 Wir programmieren im Rahmen von unserem Informatik Studium an der TH Deggendorf ein Tool, um den Desktop aufzuräumen. die Grundidee kommt von Dominik Dillinger.
-
-
-## Inhaltsverzeichnis
-* [Installation](#installation)
-
   
 ## Installation
   
